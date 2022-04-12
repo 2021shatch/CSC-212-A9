@@ -43,7 +43,9 @@ class Seahorse extends JComponent {
 
     // WRITE THE RECURSIVE CODE HERE:
     if (rank != 0) {
+      drawSeahorse(rank-1,p1, p2, g);
       drawSeahorse(rank-1,p2, p3, g);
+      drawSeahorse(rank-1,p3, p4, g);
     } else if (rank == 0) {
         g.drawLine(p1.x,p1.y,p4.x,p4.y);
     } else {

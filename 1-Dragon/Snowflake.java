@@ -39,12 +39,17 @@ class Snowflake extends JComponent {
     int dx = (p5.x-p1.x);
     int dy = (p5.y-p1.y);
     Point p2 = new Point(p1.x+dx/3,p1.y+dy/3);
-    Point p3 = new Point((int)p1.x-dx/2+dy*(Math.pow(3, 0.5))/6,p1.y-dx*(Math.pow(3, 0.5))/6+dy/2);
+    //Point p3 = new Point((int)p1.x-dx/2+dy*(Math.pow(3, 0.5))/6,p1.y-dx*(Math.pow(3, 0.5))/6+dy/2);
+
+    Point p3 = new Point((Math.toIntExact(Math.round(p1.x + dx/2+dy*Math.sqrt(3)/6))), Math.toIntExact(Math.round(p1.y-dx*Math.sqrt(3)/6+dy)/2));
     Point p4 = new Point(p5.x-dx/3,p5.y-dy/3);
 
     // WRITE THE RECURSIVE CODE HERE:
     if (rank != 0) {
-      drawEdge(rank-1,p2, p4, g);
+      drawEdge(rank-1,p1, p2, g);
+      drawEdge(rank-1,p2, p3, g);
+      drawEdge(rank-1,p3, p4, g);
+      drawEdge(rank-1,p4, p5, g);
     } else if (rank == 0) {
         g.drawLine(p1.x,p1.y,p5.x,p5.y);
     } else {

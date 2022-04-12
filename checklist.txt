@@ -50,7 +50,7 @@ ___YES__ 1 pt: Implements insert & bubble up method correctly
 
 ___YES__ 1 pt: Implements pop & bubble down method correctly
 
-___YES__ 1 pt: Implements heapsort correctly
+___PART__ 1 pt: Implements heapsort correctly
 
 
 ## Kudos:
