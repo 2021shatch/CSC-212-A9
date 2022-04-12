@@ -37,9 +37,9 @@ ___YES__ 1 pt: Implements left and right rotation methods correctly
 
 ### Great Recursive Conversions
 
-_____ 2 pts: Implements tree to DLL conversion correctly
+___PART__ 2 pts: Implements tree to DLL conversion correctly
 
-_____ 2 pts: Implements array to binary tree conversion correctly
+___YES__ 2 pts: Implements array to binary tree conversion correctly
 
 
 ### Heaps of Fun
@@ -50,12 +50,12 @@ ___YES__ 1 pt: Implements insert & bubble up method correctly
 
 ___YES__ 1 pt: Implements pop & bubble down method correctly
 
-___PART__ 1 pt: Implements heapsort correctly
+___YES__ 1 pt: Implements heapsort correctly
 
 
 ## Kudos:
 
-___NO__ (kudos) Complete all four mini-projects
+___PART__ (kudos) Complete all four mini-projects
 
 
 ## General Items:

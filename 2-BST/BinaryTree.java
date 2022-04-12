@@ -20,27 +20,6 @@ public class BinaryTree<E> {
 		right = left = null;
 	}
 
-	/** This constructor creates a tree from an array */
-	public BinaryTree(E[] arr) {
-		int pivot = (int) arr.length/2;
-		this.data = arr[pivot];
-		this.left = conversionHelper(arr, 0, pivot);
-		this.right = conversionHelper(arr, pivot+1, arr.length);
-	}
-
-	private void conversionHelper(E[] arr, int low, int high){
-		if (high-low < 4){
-			int pivot = (int) (high-low)/2;
-			BinaryTree left = new BinaryTree(arr[low]);
-			BinaryTree right = new BinaryTree(arr[low+2]);
-			BinaryTree t = new BinaryTree(arr[pivot], left, right)
-		}
-
-		pivot = (int) (high-low)/2;
-		conversionHelper(arr, low, pivot);
-		conversionHealper(arr, pivot, high);
-	}
-
 	/** This constructor creates a branch node */
 	public BinaryTree(E data, BinaryTree<E> left, BinaryTree<E> right) {
 		this.data = data;
@@ -53,6 +32,43 @@ public class BinaryTree<E> {
 		this.data = tree.data;
 		this.left = (tree.left == null) ? null : (new BinaryTree<E>(tree.left));
 		this.right = (tree.right == null) ? null : (new BinaryTree<E>(tree.right));
+	}
+
+	/**
+	 * This constructor creates a tree from an array
+	 * 
+	 * @param arr array to be made into tree
+	 */
+	public BinaryTree(E[] arr) {
+		if (arr.length == 0) {
+			this.data = null;
+			right = left = null;
+		} else {
+			int pivot = (int) arr.length / 2;
+			this.data = arr[pivot];
+			this.left = conversionHelper(arr, 0, pivot);
+			this.right = conversionHelper(arr, pivot + 1, arr.length);
+		}
+	}
+
+	/**
+	 * Recursion to split array into smaller subarray
+	 * and create tree node
+	 * 
+	 * @param arr  array to be made into tree
+	 * @param low  integer indicate start of subarray (inclusive)
+	 * @param high integer indicate end of subarray (exclusive)
+	 */
+	private BinaryTree<E> conversionHelper(E[] arr, int low, int high) {
+		if (low == high) {
+			return null;
+		} else {
+			int pivot = low + (int) (high - low) / 2;
+			BinaryTree<E> left = conversionHelper(arr, low, pivot);
+			BinaryTree<E> right = conversionHelper(arr, pivot + 1, high);
+			BinaryTree<E> tree = new BinaryTree<E>(arr[pivot], left, right);
+			return tree;
+		}
 	}
 
 	/** Accessor for node data */

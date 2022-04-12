@@ -46,7 +46,7 @@ class Dragon extends JComponent {
       g.drawLine(p1.x,p1.y,p3.x,p3.y);
     } else if (rank > 0) {
       drawDragon(rank-1,p1, p2, g);
-      drawDragon(rank-1, p3,p2,g);
+      drawDragon(rank-1, p3, p2, g);
     } else {
       throw new IllegalArgumentException("Rank cannot be lower than 0");
     }

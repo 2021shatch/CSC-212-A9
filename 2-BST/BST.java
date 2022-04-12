@@ -63,20 +63,20 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> {
    *          searching for, "q"
    * @return returns the location node of the generic type BinaryTree<E>
    */
-  public BinaryTree<E> lookup(E q) {
-    if (this == null) {
+  public BST<E> lookup(E data) {
+    if (tree == null) {
       System.out.println("Lookup failed. Please give a valid input.");
       return null;
-    } else if (this.getData().compareTo(q) == 0) {
-      return this;
+    } else if (tree.getData().compareTo(data) == 0) {
+      return tree;
     } else {
       // if q is smaller it equals 1
       // if q is bigger it equals -1
       // if they are the same, it equals 0
-      if (this.getData().compareTo(q) == 1) {
-        return lookup(this.getLeft(), q);
+      if (tree.getData().compareTo(data) == 1) {
+        return lookup(tree.getLeft(), data);
       } else {
-        return lookup(this.getRight(), q);
+        return lookup(tree.getRight(), data);
       }
     }
 
@@ -90,35 +90,71 @@ public class BST<E extends Comparable<E>> extends BinaryTree<E> {
    * @param a piece of data to be inserted of generic type E
    * @return void N/A
    */
-  public void insert(E newData) {
-    if (this.getData().compareTo(newData) == 0) {
+  public void insert(BinaryTree<E> tree, E newData) {
+    if (tree.getData().compareTo(newData) == 0) {
       System.out.println("The node already exists! Please enter a different value to be placed into the tree.");
-    } else if (this.getData().compareTo(newData) == 1) {
-      if (this.getLeft() == null) {
-        this.setLeft(new BST(newData));
+    } else if (tree.getData().compareTo(newData) == 1) {
+      if (tree.getLeft() == null) {
+        tree.setLeft(new BST(newData));
       } else {
-        insert(this.getLeft(), newData);
+        insert(tree.getLeft(), newData);
       }
     } else {
-      if (this.getRight() == null) {
-        this.setRight(new BST(newData));
+      if (tree.getRight() == null) {
+        tree.setRight(new BST(newData));
       } else {
-        insert(newData);
+        insert(tree.getRight(), newData);
       }
     }
   }
 
+  Lucie Brock:
+
   /**
    * Deletes the specified element from the tree
-   * 
-   * @rReturns the modified tree because the root node
-   *           may have changed
+   * Returns the modified tree because the root node
+   * may have changed
    * 
    * @param evictee The element to delete
    * @return tree as modified
    */
-  public BinaryTree<E> deleteWithCopyLeft(BinaryTree<E> treeToEvict, E evictee) {
-
+  public BST<E> deleteWithCopyLeft(E evictee) {
+    // make a copy of the tree
+    BST<E> copyTree = this;
+    // find node to remove
+    BST<E> node = this.lookup(evictee);
+    // edge case for when the node to look up does not exist
+    if (node == null) {
+      System.out.println("Element not found.");
+      // if the node is a leaf, find it's parent
+    } else if (node.isLeaf()) {
+      BST<E> parent = this.lookupParent(evictee);
+      // if there the parent does not have any children, it's a leaf set equal to null
+      if (parent == null) {
+        this.setData(null);
+        return copyTree;
+      }
+      // if the node needs to be removed, set it's parent equal to null
+      if (parent.getLeft().getData().compareTo(node.getData()) == 0) {
+        parent.setLeft(null);
+      } else {
+        parent.setRight(null);
+      }
+      // edge case for when there's only a child to the left
+    } else if ((node.getLeft() != null) && (node.getRight() != null)) {
+      node.setData(node.getLeft().getData());
+      node.setLeft(node.getLeft().getLeft());
+      // edge case for when there's only a child to the left
+    } else if ((node.getRight() != null) && (node.getLeft() != null)) {
+      node.setData(node.getRight().getData());
+      node.setRight(node.getRight().getRight());
+    } else {
+      // move up child to removed node's place
+      E nextNode = (node.getRight().inorderString(new ArrayList<E>()).get(0));
+      this.deleteWithCopyLeft(nextNode);
+      node.setData(nextNode);
+    }
+    return copyTree;
   }
 
   /**

@@ -9,6 +9,8 @@ import java.util.*;
 public class Heap<E extends Comparable<E>> {
 	/** Elements of the heap are stored in a ArrayList */
 	private ArrayList<E> storage;
+	/** Integer to indicate end of heap portion during heap sort */
+	private Integer endHeap;
 
 	/** Default constructor creates an empty heap */
 	public Heap() {
@@ -18,7 +20,7 @@ public class Heap<E extends Comparable<E>> {
 	/** Default constructor creates an empty heap */
 	public Heap(ArrayList<E> v) {
 		storage = v;
-		for (int i = 0; i < v.size(); i++){	
+		for (int i = 0; i < v.size(); i++) {
 			bubbleUp(i);
 		}
 	}
@@ -35,27 +37,27 @@ public class Heap<E extends Comparable<E>> {
 
 	/** @return index of parent */
 	private static int parent(int pos) {
-		return (pos-1)/2;
+		return (pos - 1) / 2;
 	}
 
 	/** @return index of left child */
 	private static int leftChild(int pos) {
-		return 2*pos+1;
+		return 2 * pos + 1;
 	}
 
 	/** @return index of right child */
 	private static int rightChild(int pos) {
-		return 2*pos+2;
+		return 2 * pos + 2;
 	}
 
 	/** @return T/F does left child exist in tree? */
 	private boolean hasLeftChild(int pos) {
-		return (leftChild(pos) < size());
+		return (leftChild(pos) < endHeap);
 	}
 
 	/** @return T/F does right child exist in tree? */
 	private boolean hasRightChild(int pos) {
-		return (rightChild(pos) < size());
+		return (rightChild(pos) < endHeap);
 	}
 
 	/**
@@ -124,11 +126,11 @@ public class Heap<E extends Comparable<E>> {
 		int pos = 0;
 		boolean done = false;
 		while (!done) {
-			if (hasRightChild(pos) && isBigger(rightChild(pos),leftChild(pos)) && isBigger(rightChild(pos), pos)) {
+			if (hasRightChild(pos) && isBigger(rightChild(pos), leftChild(pos)) && isBigger(rightChild(pos), pos)) {
 				int parent = pos;
 				pos = rightChild(pos);
 				swapWithRightChild(parent);
-			} else if ( hasLeftChild(pos) && isBigger(leftChild(pos), pos) ) {
+			} else if (hasLeftChild(pos) && isBigger(leftChild(pos), pos)) {
 				int parent = pos;
 				pos = leftChild(pos);
 				swapWithLeftChild(parent);
@@ -150,8 +152,8 @@ public class Heap<E extends Comparable<E>> {
 	public E popTop() {
 		E largest = storage.remove(0);
 		if (storage.size() > 1) {
-			E last = storage.remove(storage.size()-1);
-			storage.add(0,last); 
+			E last = storage.remove(storage.size() - 1);
+			storage.add(0, last);
 			bubbleDown();
 		}
 		return largest;
@@ -165,7 +167,7 @@ public class Heap<E extends Comparable<E>> {
 	 * @param pos The position to work with
 	 */
 	private void bubbleUp(int pos) {
-		while (isBigger(pos, parent(pos))){
+		while (isBigger(pos, parent(pos))) {
 			swapWithParent(pos);
 			pos = parent(pos);
 		}
@@ -180,7 +182,7 @@ public class Heap<E extends Comparable<E>> {
 	 */
 	public void insert(E item) {
 		storage.add(item);
-		bubbleUp(storage.size()-1);
+		bubbleUp(storage.size() - 1);
 	}
 
 	/**
@@ -189,14 +191,22 @@ public class Heap<E extends Comparable<E>> {
 	 * @param array list to sort
 	 */
 	public static <T extends Comparable<T>> void heapSort(ArrayList<T> v) {
-		Heap<T> h = new Heap<T> (v);
-		for (int i = v.size()-1; i > 0; i--){	
+		// Make v into a heap
+		Heap<T> h = new Heap<T>(v);
+		h.endHeap = v.size();
+
+		for (int i = v.size() - 1; i > 0; i--) {
+			// get largest from heap
 			T largest = v.get(0);
-			v.set(0,v.get(i));
+
+			// put largest into sorted and move last element in heap to the root
+			v.set(0, v.get(i));
 			v.set(i, largest);
-			System.out.println("Move " + largest + " from heap to position " + i + ": " +v.toString());
+
+			// reduce size of heap
+			h.endHeap = h.endHeap - 1;
+			// make the remaining portion a heap again
 			h.bubbleDown();
-			System.out.println("Heapify from start to position " + i + ": " + v.toString());
 		}
 	}
 
