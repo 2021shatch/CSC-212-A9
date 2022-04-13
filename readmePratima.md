@@ -1,0 +1,1 @@
+This assingment wasn't too bad, since we had some flexibility. We were also able to divide the mini projects within the group according to what each person felt was their strengh or something they wanted to work more on. I worked on the fractal shapes beca
